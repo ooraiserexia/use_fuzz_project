@@ -1,0 +1,16 @@
+sudo make install CC="clang -O2 -fno-omit-frame-pointer -g -fsanitize=address -fsanitize-coverage=trace-pc-guard,trace-cmp,trace-gep,trace-div" -j2
+clang -g -O1 -fsanitize=fuzzer,address mos_fuzzer.cc -o mos_fuzzer -lmosquitto
+
+目前clang已经将libfuzzer集成，fuzz只需要三步：
+Step1：编译需要fuzz的目标，插入fuzz监控（打桩）
+Step2：编译fuzz程序（编译fuzz程序时通常要load库）
+Step3：运行fuzz程序
+
+Load库的一些命令：
+不load库可能出现的错误是找不到申明的函数，安装库的时候头文件将安装在/usr/local/include/，库将安装在/usr/local/lib
+-l库名
+-ldconfig -p 查询是否有库
+
+
+ASAN:
+可以发现程序运行中的crash原因的技术，如溢出，doube free等等，通过打桩实现对运行程序的监控，clang中-fsanitize=fuzzer,address为在编译中加入代码
