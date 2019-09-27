@@ -1,0 +1,16 @@
+
+
+TLDR:
+
+    If you use GCC/Clang and both main executable and shlibs are sanitized, you don't need to do anything special - just stick with default -fsanitize=address.
+    If you use GCC and only shlibs are sanitized, again keep using -fsanitize=address and additionally export LD_PRELOAD=libasan.so when running your application.
+    If you use Clang and only shlibs are sanitized, compile/link with -fsanitize-address -shared-libasan and additionally export LD_PRELOAD=libclang_rt.asan-x86_64.so when running the app.
+
+Now some explanations. Originally Asan existed only in Clang which by default used (and still uses) -static-libasan. When it was ported to GCC, GCC developers decided that shared runtime is preferred (e.g. because it allows one to sanitize just one shared library and keep main executable unsanitized, see wiki for other examples). Both approaches are binary incompatible so you can't link part of your applications with static runtime and part with dynamic runtime.
+
+Roughly
+
+    GCCs -fsanitize=address is equivalent to Clangs -fsanitize=address -shared-libasan (and -shared-libasan is second-class citizen in Clang so not as well supported)
+    Clangs -fsanitize=address is equivalent to GCCs -fsanitize=address -static-libasan (and again, -static-libasan is second-class citizen in GCC so has some issues)
+
+As a side note, for other GCC/Clang Asan differences see this helpful wiki.
