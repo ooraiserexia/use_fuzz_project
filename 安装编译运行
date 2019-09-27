@@ -2,8 +2,8 @@ sudo make install CC="clang -O2 -fno-omit-frame-pointer -g -fsanitize=address -f
 clang -g -O1 -fsanitize=fuzzer,address mos_fuzzer.cc -o mos_fuzzer -lmosquitto
 
 目前clang已经将libfuzzer集成，fuzz只需要三步：
-Step1：编译需要fuzz的目标，插入fuzz监控（打桩）
-Step2：编译fuzz程序（编译fuzz程序时通常要load库）
+Step1：编译需要fuzz的目标，fuzz的目标编译的时候不需要打桩，只需要正常编译-------插入fuzz监控（打桩）
+Step2：编译fuzz程序（编译fuzz程序时通常要load库，引入需要fuzz的函数的头文件）
 Step3：运行fuzz程序
 
 Load库的一些命令：
