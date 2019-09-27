@@ -14,3 +14,10 @@ Load库的一些命令：
 
 ASAN:
 可以发现程序运行中的crash原因的技术，如溢出，doube free等等，通过打桩实现对运行程序的监控，clang中-fsanitize=fuzzer,address为在编译中加入代码
+
+
+/usr/bin/ld: transform.o: undefined reference to symbol 'cos@@GLIBC_2.2.5'
+//lib/x86_64-linux-gnu/libm.so.6: error adding symbols: DSO missing from command line
+collect2: error: ld returned 1 exit status
+
+使用 -lm参数
