@@ -21,3 +21,6 @@ ASAN:
 collect2: error: ld returned 1 exit status
 
 使用 -lm参数
+
+lz -lrt -lm -lpthread 这些参数都是用于解决类似问题的
+
